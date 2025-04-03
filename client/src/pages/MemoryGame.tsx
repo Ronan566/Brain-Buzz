@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { queryClient } from '../lib/queryClient';
 import { type MemoryGameState, type UserScore } from '@shared/schema';
 import { playSound, preloadSounds } from '../lib/sound';
-import { generateConfetti, createJumpingFish } from '../lib/animations';
-import JumpingFish from '@/components/JumpingFish';
+import { generateConfetti } from '../lib/animations';
+import Fireworks from '@/components/Fireworks';
 
 const initialGameState: MemoryGameState = {
   currentCategory: "",
@@ -35,7 +35,7 @@ export default function MemoryGame() {
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   const [timeLeft, setTimeLeft] = useState<number>(60);
   const [isChecking, setIsChecking] = useState<boolean>(false);
-  const [showFish, setShowFish] = useState<boolean>(false);
+  const [showFireworks, setShowFireworks] = useState<boolean>(false);
   
   // Preload sounds
   useEffect(() => {
@@ -212,11 +212,11 @@ export default function MemoryGame() {
           playSound('match');
           setMatchedCards(prev => [...prev, firstCardId, secondCardId]);
           
-          // Show fish animation for correct match
-          setShowFish(true);
+          // Show fireworks animation for correct match
+          setShowFireworks(true);
           setTimeout(() => {
-            setShowFish(false);
-          }, 3000);
+            setShowFireworks(false);
+          }, 2000);
           
           // Update remaining pairs
           const newRemainingPairs = gameState.remainingPairs - 1;
@@ -451,8 +451,8 @@ export default function MemoryGame() {
         </div>
       </div>
       
-      {/* Jumping Fish Animation */}
-      <JumpingFish isVisible={showFish} count={7} />
+      {/* Fireworks Animation */}
+      <Fireworks isVisible={showFireworks} count={15} duration={2000} />
       
       {/* CSS for memory cards is added via regular CSS classes */}
     </div>
