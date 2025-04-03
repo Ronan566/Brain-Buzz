@@ -22,10 +22,9 @@ export default function Keyboard({ layout, guessedLetters, currentWord, onKeyPre
   
   // Handle key press
   const handleKeyPress = (letter: string) => {
-    if (!guessedLetters.includes(letter)) {
-      playSound('click');
-      onKeyPress(letter);
-    }
+    // Allow letters to be chosen multiple times
+    playSound('click');
+    onKeyPress(letter);
   };
   
   return (
@@ -48,12 +47,11 @@ export default function Keyboard({ layout, guessedLetters, currentWord, onKeyPre
                 variants={keyboardKeyVariants}
                 initial="initial"
                 animate={isCorrect ? "correct" : isIncorrect ? "incorrect" : "animate"}
-                whileHover={!isGuessed ? "hover" : undefined}
-                whileTap={!isGuessed ? "tap" : undefined}
+                whileHover="hover"
+                whileTap="tap"
                 custom={rowIndex * 10 + letterIndex}
                 onClick={() => handleKeyPress(letter)}
                 className={`keyboard-key w-9 h-12 rounded-lg ${bgColor} flex items-center justify-center font-semibold shadow-lg`}
-                disabled={isGuessed}
               >
                 {letter}
               </motion.button>

@@ -144,9 +144,9 @@ export class MemStorage implements IStorage {
     const newCard = {
       id,
       value: card.value,
-      image: card.image,
+      image: card.image ?? null, // Ensure image is never undefined
       categoryId: card.categoryId,
-      difficulty: card.difficulty || 1
+      difficulty: card.difficulty ?? 1 // Ensure difficulty is never undefined
     };
     this.memoryCards.set(id, newCard);
     return newCard;
@@ -158,7 +158,7 @@ export class MemStorage implements IStorage {
       name: "Word Guessing Challenge",
       icon: "fa-font",
       color: "#4F46E5", // Improved color for better visibility
-      wordCount: 25,
+      wordCount: 0,
       gameType: "word"
     });
 
@@ -166,7 +166,7 @@ export class MemStorage implements IStorage {
       name: "Memory Matching",
       icon: "fa-clone",
       color: "#F59E0B",
-      wordCount: 30,
+      wordCount: 0,
       gameType: "memory"
     });
 
@@ -174,7 +174,7 @@ export class MemStorage implements IStorage {
       name: "Number Sequences",
       icon: "fa-sort-numeric-up",
       color: "#6366F1",
-      wordCount: 32,
+      wordCount: 0,
       gameType: "number"
     });
 
@@ -182,7 +182,7 @@ export class MemStorage implements IStorage {
       name: "Crosswords",
       icon: "fa-table",
       color: "#F59E0B",
-      wordCount: 18,
+      wordCount: 0,
       gameType: "crossword"
     });
 

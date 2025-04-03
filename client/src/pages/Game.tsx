@@ -8,7 +8,7 @@ import SuccessModal from "@/components/SuccessModal";
 import GameOverModal from "@/components/GameOverModal";
 import HintModal from "@/components/HintModal";
 import ThemeInfo from "@/components/ThemeInfo";
-import JumpingFish from "@/components/JumpingFish";
+import Fireworks from "@/components/Fireworks";
 import { playSound } from "@/lib/sound";
 
 export default function Game() {
@@ -17,7 +17,7 @@ export default function Game() {
   const categoryId = matched ? parseInt(params.categoryId) : null;
   
   const [showHintModal, setShowHintModal] = useState(false);
-  const [showFish, setShowFish] = useState(false);
+  const [showFireworks, setShowFireworks] = useState(false);
   
   // Initialize game state
   const {
@@ -34,19 +34,17 @@ export default function Game() {
   // Get the current word
   const currentWord = getCurrentWord();
   
-  // Custom wrapper for guessLetter to show fish animation on correct guesses
+  // Custom wrapper for guessLetter with fireworks animation on correct guesses
   const handleGuessLetter = (letter: string) => {
-    // Check if this letter is in the word and not already guessed
-    if (currentWord && 
-        currentWord.includes(letter) && 
-        !gameState.guessedLetters.includes(letter)) {
-      // Trigger fish animation
-      setShowFish(true);
+    // Check if this letter is in the word
+    if (currentWord && currentWord.includes(letter)) {
+      // If this is a correct letter, show a brief firework
+      setShowFireworks(true);
       
-      // Reset fish animation after a delay
+      // Reset fireworks animation after 2 seconds
       setTimeout(() => {
-        setShowFish(false);
-      }, 3000);
+        setShowFireworks(false);
+      }, 2000);
     }
     
     // Call the original guessLetter function
@@ -198,8 +196,8 @@ export default function Game() {
         />
       )}
       
-      {/* Jumping Fish Animation */}
-      <JumpingFish isVisible={showFish} count={7} />
+      {/* Fireworks Animation */}
+      <Fireworks isVisible={showFireworks} duration={2000} />
       
       {/* Modals */}
       <AnimatePresence>
