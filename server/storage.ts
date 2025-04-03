@@ -162,22 +162,6 @@ export class MemStorage implements IStorage {
       gameType: "memory"
     });
 
-    const puzzleGamesCategory = this.addCategory({
-      name: "Puzzle Games",
-      icon: "fa-puzzle-piece",
-      color: "#10B981",
-      wordCount: 20,
-      gameType: "puzzle"
-    });
-
-    const wordSearchCategory = this.addCategory({
-      name: "Word Search",
-      icon: "fa-search",
-      color: "#EF4444",
-      wordCount: 27,
-      gameType: "wordsearch"
-    });
-
     const numberSequenceCategory = this.addCategory({
       name: "Number Sequences",
       icon: "fa-sort-numeric-up",
@@ -309,57 +293,7 @@ export class MemStorage implements IStorage {
       hints: ["Finding identical items", "Looking for similarities", "Pairing like with like"]
     });
 
-    // Add words for Puzzle Games category
-    this.addWord({
-      word: "JIGSAW",
-      categoryId: puzzleGamesCategory.id,
-      hints: ["Pieces that interlock", "Creates a complete picture", "Often has 500-1000 pieces"]
-    });
 
-    this.addWord({
-      word: "SLIDING",
-      categoryId: puzzleGamesCategory.id,
-      hints: ["Moving tiles in a frame", "Rearranging into correct order", "Classic 15-puzzle game"]
-    });
-
-    this.addWord({
-      word: "TANGRAM",
-      categoryId: puzzleGamesCategory.id,
-      hints: ["Chinese geometric puzzle", "Seven pieces to form shapes", "Tests spatial reasoning"]
-    });
-
-    // Add more words for Puzzle Games category
-    this.addWord({
-      word: "SUDOKU",
-      categoryId: puzzleGamesCategory.id,
-      hints: ["Number placement puzzle", "Grid with 9x9 squares", "Each row and column has numbers 1-9"]
-    });
-
-    // Add words for Word Search category
-    this.addWord({
-      word: "HIDDEN",
-      categoryId: wordSearchCategory.id,
-      hints: ["Not easily seen", "Concealed from view", "Requires careful searching"]
-    });
-
-    this.addWord({
-      word: "LETTERS",
-      categoryId: wordSearchCategory.id,
-      hints: ["Alphabet characters", "Building blocks of words", "Can be arranged in grids"]
-    });
-
-    this.addWord({
-      word: "SEARCH",
-      categoryId: wordSearchCategory.id,
-      hints: ["Looking for something", "Careful examination", "Finding what's concealed"]
-    });
-
-    // Add more words for Word Search category
-    this.addWord({
-      word: "GRID",
-      categoryId: wordSearchCategory.id,
-      hints: ["Network of lines", "Organized arrangement", "Forms boxes or cells"]
-    });
 
     // Add words for Number Sequences category
     this.addWord({
