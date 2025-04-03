@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import CategorySelection from "@/pages/CategorySelection";
 import Game from "@/pages/Game";
+import MemoryGame from "@/pages/MemoryGame";
 
 function App() {
   return (

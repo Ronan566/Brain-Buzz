@@ -1,12 +1,15 @@
 import { 
   categories, 
   words, 
+  memoryCards,
   userScores, 
   type Category, 
   type Word, 
+  type MemoryCard,
   type UserScore,
   type InsertCategory,
-  type InsertWord
+  type InsertWord,
+  type InsertMemoryCard
 } from "@shared/schema";
 
 // Interface for storage operations
@@ -19,6 +22,10 @@ export interface IStorage {
   getWordsByCategoryId(categoryId: number): Promise<Word[]>;
   getRandomWordsByCategoryId(categoryId: number, count: number): Promise<Word[]>;
   
+  // Memory card methods
+  getMemoryCardsByCategoryId(categoryId: number): Promise<MemoryCard[]>;
+  getRandomMemoryCardsByCategoryId(categoryId: number, count: number): Promise<MemoryCard[]>;
+  
   // Score methods
   getUserScore(): Promise<UserScore>;
   updateUserScore(score: Partial<UserScore>): Promise<UserScore>;
@@ -28,21 +35,26 @@ export interface IStorage {
 export class MemStorage implements IStorage {
   private categories: Map<number, Category>;
   private words: Map<number, Word>;
+  private memoryCards: Map<number, MemoryCard>;
   private userScore: UserScore;
   private categoryCurrentId: number;
   private wordCurrentId: number;
+  private memoryCardCurrentId: number;
 
   constructor() {
     this.categories = new Map();
     this.words = new Map();
+    this.memoryCards = new Map();
     this.categoryCurrentId = 1;
     this.wordCurrentId = 1;
+    this.memoryCardCurrentId = 1;
     
     // Initialize with default user score
     this.userScore = {
       id: 1,
       bestScore: 0,
       wordsSolved: 0,
+      memorySetsCompleted: 0,
       categoryProgress: {}
     };
     
@@ -74,6 +86,21 @@ export class MemStorage implements IStorage {
       .slice(0, count);
   }
 
+  // Memory card methods
+  async getMemoryCardsByCategoryId(categoryId: number): Promise<MemoryCard[]> {
+    return Array.from(this.memoryCards.values()).filter(
+      (card) => card.categoryId === categoryId,
+    );
+  }
+
+  async getRandomMemoryCardsByCategoryId(categoryId: number, count: number): Promise<MemoryCard[]> {
+    const categoryCards = await this.getMemoryCardsByCategoryId(categoryId);
+    // Shuffle array and take requested count
+    return [...categoryCards]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, count);
+  }
+
   // Score methods
   async getUserScore(): Promise<UserScore> {
     return this.userScore;
@@ -98,10 +125,23 @@ export class MemStorage implements IStorage {
       id,
       word: word.word,
       categoryId: word.categoryId,
-      hints: word.hints
+      hints: word.hints || []
     };
     this.words.set(id, newWord);
     return newWord;
+  }
+  
+  private addMemoryCard(card: InsertMemoryCard): MemoryCard {
+    const id = this.memoryCardCurrentId++;
+    const newCard = {
+      id,
+      value: card.value,
+      image: card.image,
+      categoryId: card.categoryId,
+      difficulty: card.difficulty || 1
+    };
+    this.memoryCards.set(id, newCard);
+    return newCard;
   }
 
   private seedData() {
@@ -110,42 +150,48 @@ export class MemStorage implements IStorage {
       name: "Word Guessing Challenge",
       icon: "fa-font",
       color: "#4F46E5", // Improved color for better visibility
-      wordCount: 25
+      wordCount: 25,
+      gameType: "word"
     });
 
     const memoryMatchCategory = this.addCategory({
       name: "Memory Matching",
       icon: "fa-clone",
       color: "#F59E0B",
-      wordCount: 30
+      wordCount: 30,
+      gameType: "memory"
     });
 
     const puzzleGamesCategory = this.addCategory({
       name: "Puzzle Games",
       icon: "fa-puzzle-piece",
       color: "#10B981",
-      wordCount: 20
+      wordCount: 20,
+      gameType: "puzzle"
     });
 
     const wordSearchCategory = this.addCategory({
       name: "Word Search",
       icon: "fa-search",
       color: "#EF4444",
-      wordCount: 27
+      wordCount: 27,
+      gameType: "wordsearch"
     });
 
     const numberSequenceCategory = this.addCategory({
       name: "Number Sequences",
       icon: "fa-sort-numeric-up",
       color: "#6366F1",
-      wordCount: 32
+      wordCount: 32,
+      gameType: "number"
     });
 
     const crosswordsCategory = this.addCategory({
       name: "Crosswords",
       icon: "fa-table",
       color: "#F59E0B",
-      wordCount: 18
+      wordCount: 18,
+      gameType: "crossword"
     });
 
     // Add words for Word Guessing category (Animals theme)
@@ -366,6 +412,66 @@ export class MemStorage implements IStorage {
       categoryId: crosswordsCategory.id,
       hints: ["Complete the empty spaces", "Enter the correct answers", "Populate the blank squares"]
     });
+    
+    // Add memory cards for animals category
+    const animalsCategoryId = memoryMatchCategory.id;
+    
+    this.addMemoryCard({ value: "🐘", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🐘", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🦒", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🦒", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🦁", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🦁", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🐬", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🐬", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🦈", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🦈", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🐢", categoryId: animalsCategoryId, difficulty: 1 });
+    this.addMemoryCard({ value: "🐢", categoryId: animalsCategoryId, difficulty: 1 });
+    
+    // Add memory cards for food category
+    const foodCategoryId = memoryMatchCategory.id;
+    
+    this.addMemoryCard({ value: "🍕", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍕", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍔", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍔", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍦", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍦", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍩", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍩", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍎", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍎", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍉", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍉", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🥑", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🥑", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍗", categoryId: foodCategoryId, difficulty: 2 });
+    this.addMemoryCard({ value: "🍗", categoryId: foodCategoryId, difficulty: 2 });
+    
+    // Add memory cards for space category
+    const spaceCategoryId = memoryMatchCategory.id;
+    
+    this.addMemoryCard({ value: "🚀", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🚀", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🌎", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🌎", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🌙", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🌙", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "⭐", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "⭐", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "☄️", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "☄️", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🌌", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🌌", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "👨‍🚀", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "👨‍🚀", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "👩‍🚀", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "👩‍🚀", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🛰️", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🛰️", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🪐", categoryId: spaceCategoryId, difficulty: 3 });
+    this.addMemoryCard({ value: "🪐", categoryId: spaceCategoryId, difficulty: 3 });
   }
 }
 

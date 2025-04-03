@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { gameStateSchema } from "@shared/schema";
+import { gameStateSchema, memoryGameStateSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -72,6 +72,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const scoreSchema = z.object({
         bestScore: z.number().optional(),
         wordsSolved: z.number().optional(),
+        memorySetsCompleted: z.number().optional(),
         categoryProgress: z.record(z.number()).optional(),
       });
 
@@ -128,6 +129,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(gameState);
     } catch (error) {
       res.status(500).json({ message: "Failed to start game" });
+    }
+  });
+
+  // Create memory game session with initial game state
+  app.post("/api/memory/start", async (req, res) => {
+    try {
+      const startMemoryGameSchema = z.object({
+        categoryId: z.number(),
+        difficulty: z.number().default(1),
+        cardCount: z.number().default(12),
+      });
+
+      const parsedData = startMemoryGameSchema.safeParse(req.body);
+      if (!parsedData.success) {
+        return res.status(400).json({ 
+          message: "Invalid memory game data", 
+          errors: parsedData.error 
+        });
+      }
+
+      const { categoryId, difficulty, cardCount } = parsedData.data;
+      
+      const category = await storage.getCategoryById(categoryId);
+      if (!category) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+
+      // Get memory cards for this category and difficulty
+      let cards = await storage.getRandomMemoryCardsByCategoryId(categoryId, cardCount / 2);
+      
+      // Duplicate each card to create pairs
+      cards = cards.flatMap(card => [
+        { ...card, id: card.id * 2 - 1 },
+        { ...card, id: card.id * 2 }
+      ]);
+      
+      // Shuffle the cards
+      const shuffledCards = [...cards]
+        .sort(() => 0.5 - Math.random())
+        .map((card, index) => ({
+          id: card.id,
+          value: card.value,
+          image: card.image || null,
+          flipped: false,
+          matched: false,
+          position: index
+        }));
+
+      // Initialize the memory game state
+      const gameState = {
+        currentCategory: category.name,
+        categoryId: category.id,
+        cards: shuffledCards,
+        difficulty: difficulty,
+        moves: 0,
+        pairs: Math.floor(shuffledCards.length / 2),
+        remainingPairs: Math.floor(shuffledCards.length / 2),
+        timeElapsed: 0,
+        timeLimit: difficulty === 1 ? 120 : difficulty === 2 ? 90 : 60,
+        score: 0,
+        gameStatus: "playing"
+      };
+
+      res.json(gameState);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to start memory game" });
     }
   });
 
