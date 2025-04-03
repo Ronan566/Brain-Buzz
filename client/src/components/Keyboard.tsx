@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { keyboardKeyVariants } from "@/lib/animations";
-import { playSound } from "@/lib/sound";
 
 interface KeyboardProps {
   layout: string[][];
@@ -23,7 +22,6 @@ export default function Keyboard({ layout, guessedLetters, currentWord, onKeyPre
   // Handle key press
   const handleKeyPress = (letter: string) => {
     // Allow letters to be chosen multiple times
-    playSound('click');
     onKeyPress(letter);
   };
   
@@ -35,11 +33,11 @@ export default function Keyboard({ layout, guessedLetters, currentWord, onKeyPre
             // Determine key state for styling
             const isCorrect = isCorrectLetter(letter);
             const isIncorrect = isIncorrectLetter(letter);
-            const isGuessed = guessedLetters.includes(letter);
             
+            // Always keep letters visible after being clicked
             let bgColor = "bg-white/20";
-            if (isCorrect) bgColor = "bg-correct bg-emerald-500";
-            if (isIncorrect) bgColor = "bg-incorrect bg-red-500";
+            if (isCorrect) bgColor = "bg-emerald-500";
+            if (isIncorrect) bgColor = "bg-red-500";
             
             return (
               <motion.button
