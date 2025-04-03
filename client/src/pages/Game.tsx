@@ -7,6 +7,7 @@ import Keyboard from "@/components/Keyboard";
 import SuccessModal from "@/components/SuccessModal";
 import GameOverModal from "@/components/GameOverModal";
 import HintModal from "@/components/HintModal";
+import ThemeInfo from "@/components/ThemeInfo";
 import { playSound } from "@/lib/sound";
 
 export default function Game() {
@@ -125,6 +126,12 @@ export default function Game() {
               transition={{ delay: 0.3, duration: 0.5 }}
               className="inline-block bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 max-w-[80%]"
             >
+              <div className="flex items-center justify-between mb-1">
+                <ThemeInfo word={currentWord} />
+                <div className="text-xs text-white/50">
+                  {currentWord.length} letters
+                </div>
+              </div>
               <p className="text-sm text-white/90">
                 <span className="font-semibold">Hint:</span> 
                 <span className="ml-1">{getCurrentHint()}</span>
