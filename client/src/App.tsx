@@ -13,6 +13,7 @@ function App() {
       <Switch>
         <Route path="/" component={CategorySelection} />
         <Route path="/game/:categoryId" component={Game} />
+        <Route path="/memory/:id" component={MemoryGame} />
         <Route component={NotFound} />
       </Switch>
       <Toaster />

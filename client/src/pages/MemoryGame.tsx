@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { apiRequest, queryClient } from '../lib/queryClient';
-import { type MemoryGameState } from '@shared/schema';
+import { queryClient } from '../lib/queryClient';
+import { type MemoryGameState, type UserScore } from '@shared/schema';
 import { playSound, preloadSounds } from '../lib/sound';
 import { generateConfetti } from '../lib/animations';
 
@@ -43,11 +43,19 @@ export default function MemoryGame() {
   // Start the game when the component mounts
   const startGameMutation = useMutation({
     mutationFn: async (categoryId: number) => {
-      const response = await apiRequest('/api/memory/start', {
+      const response = await fetch('/api/memory/start', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ categoryId, difficulty: 1 })
       });
-      return response as MemoryGameState;
+      
+      if (!response.ok) {
+        throw new Error('Failed to start game');
+      }
+      
+      return await response.json() as MemoryGameState;
     },
     onSuccess: (data) => {
       setGameState(data);
@@ -63,11 +71,19 @@ export default function MemoryGame() {
   // Update score mutation
   const updateScoreMutation = useMutation({
     mutationFn: async (score: { memorySetsCompleted: number }) => {
-      const response = await apiRequest('/api/scores', {
+      const response = await fetch('/api/scores', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(score)
       });
-      return response;
+      
+      if (!response.ok) {
+        throw new Error('Failed to update score');
+      }
+      
+      return await response.json() as UserScore;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/scores'] });
@@ -75,11 +91,16 @@ export default function MemoryGame() {
   });
   
   // Get user score
-  const { data: userScore } = useQuery({
+  const { data: userScore } = useQuery<UserScore>({
     queryKey: ['/api/scores'],
     queryFn: async () => {
-      const response = await apiRequest('/api/scores');
-      return response;
+      const response = await fetch('/api/scores');
+      
+      if (!response.ok) {
+        throw new Error('Failed to get user score');
+      }
+      
+      return await response.json() as UserScore;
     }
   });
   
@@ -140,8 +161,9 @@ export default function MemoryGame() {
     
     // Update best score if needed
     if (userScore) {
+      const currentSets = userScore.memorySetsCompleted || 0;
       updateScoreMutation.mutate({ 
-        memorySetsCompleted: userScore.memorySetsCompleted + 1 
+        memorySetsCompleted: currentSets + 1 
       });
     }
   };
@@ -421,55 +443,7 @@ export default function MemoryGame() {
         </div>
       </div>
       
-      {/* CSS for memory cards */}
-      <style jsx>{`
-        .memory-card-container {
-          aspect-ratio: 1;
-          perspective: 1000px;
-        }
-        
-        .memory-card {
-          width: 100%;
-          height: 100%;
-          position: relative;
-          transform-style: preserve-3d;
-          transition: transform 0.5s;
-        }
-        
-        .memory-card.flipped {
-          transform: rotateY(180deg);
-        }
-        
-        .memory-card-front,
-        .memory-card-back {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          backface-visibility: hidden;
-        }
-        
-        .memory-card-front {
-          transform: rotateY(180deg);
-        }
-        
-        .memory-card-container.matched .memory-card-front {
-          background-color: #d1fae5;
-          border: 2px solid #10b981;
-        }
-        
-        .game-over-modal {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 50;
-          background-color: rgba(0, 0, 0, 0.7);
-        }
-      `}</style>
+      {/* CSS for memory cards is added via regular CSS classes */}
     </div>
   );
 }

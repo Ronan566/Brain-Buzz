@@ -24,8 +24,17 @@ export default function CategorySelection() {
   });
 
   // Handle category selection
-  const handleCategorySelect = (categoryId: number) => {
-    setLocation(`/game/${categoryId}`);
+  const handleCategorySelect = (category: any) => {
+    // Route to different game types based on the category's gameType
+    switch (category.gameType) {
+      case "memory":
+        setLocation(`/memory/${category.id}`);
+        break;
+      case "word":
+      default:
+        setLocation(`/game/${category.id}`);
+        break;
+    }
   };
 
   // Loading state
@@ -82,7 +91,7 @@ export default function CategorySelection() {
             key={category.id}
             category={category}
             index={index}
-            onSelect={() => handleCategorySelect(category.id)}
+            onSelect={() => handleCategorySelect(category)}
           />
         ))}
       </div>

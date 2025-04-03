@@ -26,6 +26,19 @@ const SOUNDS = {
     src: "https://assets.mixkit.co/active_storage/sfx/1114/1114.wav",
     volume: 0.3,
   },
+  // Memory game specific sounds
+  flip: {
+    src: "https://assets.mixkit.co/active_storage/sfx/2073/2073.wav",
+    volume: 0.4,
+  },
+  match: {
+    src: "https://assets.mixkit.co/active_storage/sfx/2703/2703.wav",
+    volume: 0.5,
+  },
+  start: {
+    src: "https://assets.mixkit.co/active_storage/sfx/2002/2002.wav",
+    volume: 0.5,
+  }
 };
 
 // Sound cache
