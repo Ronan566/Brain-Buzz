@@ -188,10 +188,14 @@ export function useGameState(categoryId: number | null) {
     if (!currentWord) return;
     
     // Allow letters to be chosen multiple times
-    // Only add to guessedLetters if it's not already there
-    const newGuessedLetters = gameState.guessedLetters.includes(letter) 
-      ? gameState.guessedLetters 
-      : [...gameState.guessedLetters, letter];
+    // Always add letter to guessedLetters to ensure it's marked as guessed
+    // even if it's already there - this ensures correct display in keyboard
+    const newGuessedLetters = [...gameState.guessedLetters];
+    
+    // Only add it if not already there to avoid duplicates
+    if (!newGuessedLetters.includes(letter)) {
+      newGuessedLetters.push(letter);
+    }
     
     const isCorrect = currentWord.includes(letter);
     
