@@ -107,9 +107,9 @@ export class MemStorage implements IStorage {
   private seedData() {
     // Add categories for different brain teaser games
     const wordPuzzleCategory = this.addCategory({
-      name: "Word Guessing",
+      name: "Word Guessing Challenge",
       icon: "fa-font",
-      color: "#6366F1",
+      color: "#4F46E5", // Improved color for better visibility
       wordCount: 25
     });
 
@@ -148,30 +148,93 @@ export class MemStorage implements IStorage {
       wordCount: 18
     });
 
-    // Add words for Word Guessing category
+    // Add words for Word Guessing category (Animals theme)
     this.addWord({
-      word: "PUZZLE",
+      word: "DOLPHIN",
       categoryId: wordPuzzleCategory.id,
-      hints: ["A game or problem that tests ingenuity", "Often involves fitting pieces together", "Can be a mental challenge"]
+      hints: ["Intelligent marine mammal", "Known for its playful behavior", "Uses echolocation to navigate"]
     });
 
     this.addWord({
-      word: "RIDDLE",
+      word: "ELEPHANT",
       categoryId: wordPuzzleCategory.id,
-      hints: ["A mystifying question to be solved", "Often uses wordplay", "Requires thinking outside the box"]
+      hints: ["Largest land mammal", "Has a long trunk and tusks", "Known for excellent memory"]
     });
 
     this.addWord({
-      word: "CRYPTIC",
+      word: "GIRAFFE",
       categoryId: wordPuzzleCategory.id,
-      hints: ["Having a hidden meaning", "Mysterious or obscure", "Requires decoding"]
+      hints: ["Tallest living animal", "Has a very long neck", "Native to African savannas"]
     });
 
-    // Add more words for Word Guessing category
     this.addWord({
-      word: "ENIGMA",
+      word: "PENGUIN",
       categoryId: wordPuzzleCategory.id,
-      hints: ["A puzzling mystery", "Hard to understand or explain", "Requires careful thought"]
+      hints: ["Flightless bird", "Primarily lives in Antarctica", "Excellent swimmers"]
+    });
+
+    // Add more words for Word Guessing category (Countries theme)
+    this.addWord({
+      word: "BRAZIL",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Largest country in South America", "Famous for carnival celebrations", "Home to most of the Amazon rainforest"]
+    });
+
+    this.addWord({
+      word: "JAPAN",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Island nation in East Asia", "Known for cherry blossoms", "Famous for sushi and anime"]
+    });
+
+    this.addWord({
+      word: "EGYPT",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["North African country", "Famous for ancient pyramids", "The Nile river runs through it"]
+    });
+
+    this.addWord({
+      word: "CANADA",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Second largest country by area", "Known for maple syrup", "Has the longest coastline in the world"]
+    });
+    
+    // Add more words for Word Guessing category (Foods theme)
+    this.addWord({
+      word: "CHOCOLATE",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Sweet treat made from cocoa", "Can be dark, milk or white", "Often given as a gift on Valentine's Day"]
+    });
+
+    this.addWord({
+      word: "PIZZA",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Italian dish with toppings", "Usually round with a crust", "Popular delivery food"]
+    });
+    
+    // Add more words for Word Guessing category (Space theme)
+    this.addWord({
+      word: "GALAXY",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Massive system of stars", "The Milky Way is one", "Contains planets, stars and nebulae"]
+    });
+
+    this.addWord({
+      word: "METEOR",
+      categoryId: wordPuzzleCategory.id, 
+      hints: ["Space rock that enters atmosphere", "Creates a streak of light", "Also called a shooting star"]
+    });
+
+    // Add more words for Word Guessing category (Technology theme)
+    this.addWord({
+      word: "COMPUTER",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Electronic device for processing data", "Has a CPU and memory", "Used for work and entertainment"]
+    });
+
+    this.addWord({
+      word: "INTERNET",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Global network of connected computers", "Used to access websites", "Allows instant communication worldwide"]
     });
 
     // Add words for Memory Matching category

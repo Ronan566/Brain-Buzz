@@ -70,8 +70,9 @@ export default function SuccessModal({ word, score, hintsUsed, onNext, onCategor
           <i className="fas fa-check text-4xl text-green-500"></i>
         </div>
         
-        <h2 className="text-2xl font-bold mb-2">Excellent!</h2>
-        <p className="text-center text-white/80 mb-4">You guessed "{word}" correctly!</p>
+        <h2 className="text-2xl font-bold mb-2">Word Mastered!</h2>
+        <p className="text-center text-white/80 mb-4">You correctly guessed "<span className="font-bold text-white">{word}</span>"!</p>
+        <p className="text-center text-white/80 mb-3 text-sm">Your vocabulary is growing stronger!</p>
         
         <div className="grid grid-cols-2 gap-4 w-full mb-6">
           <div className="bg-white/10 rounded-lg p-3 text-center">

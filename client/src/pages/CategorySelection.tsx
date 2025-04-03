@@ -56,7 +56,7 @@ export default function CategorySelection() {
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold mb-2 tracking-wide"
         >
-          BrainGames
+          Word Master
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -64,8 +64,16 @@ export default function CategorySelection() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="text-white/90"
         >
-          Select a brain teaser to challenge yourself!
+          Challenge your vocabulary and word skills!
         </motion.p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="mt-3 mb-1 px-4 py-1 bg-indigo-600 rounded-full inline-block"
+        >
+          <span className="text-sm font-medium">Featured: Word Guessing Challenge</span>
+        </motion.div>
       </header>
       
       <div className="grid grid-cols-2 gap-4 flex-grow overflow-y-auto pb-20">
@@ -94,7 +102,7 @@ export default function CategorySelection() {
           </div>
           <div className="w-px h-10 bg-white/20"></div>
           <div className="flex flex-col items-center">
-            <span className="text-sm opacity-70">Puzzles Solved</span>
+            <span className="text-sm opacity-70">Words Mastered</span>
             <span className="font-bold">{userScore?.wordsSolved || 0}</span>
           </div>
         </div>
