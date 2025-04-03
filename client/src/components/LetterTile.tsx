@@ -25,7 +25,7 @@ export default function LetterTile({ letter, revealed, index, difficultyClass = 
       custom={index}
       className={`letter-tile ${sizeClass} rounded-lg flex items-center justify-center bg-white/10 font-bold uppercase`}
     >
-      {revealed && (
+      {revealed ? (
         <motion.span
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -33,6 +33,9 @@ export default function LetterTile({ letter, revealed, index, difficultyClass = 
         >
           {letter}
         </motion.span>
+      ) : (
+        // Show an empty space with the same height to keep layout consistent
+        <span className="opacity-0">&nbsp;</span>
       )}
     </motion.div>
   );

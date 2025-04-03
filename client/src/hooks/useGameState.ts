@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { gameStateSchema } from "@shared/schema";
+import type { UserScore } from "@shared/schema";
 import { z } from "zod";
 import { playSound } from "@/lib/sound";
 
@@ -49,7 +50,7 @@ export function useGameState(categoryId: number | null) {
   });
 
   // Get user score
-  const { data: userScore } = useQuery({
+  const { data: userScore } = useQuery<UserScore>({
     queryKey: ['/api/scores'],
     enabled: categoryId !== null,
   });
@@ -71,6 +72,7 @@ export function useGameState(categoryId: number | null) {
         remainingHints: 3,
         revealedHints: 0,
         score: 0,
+        gameStatus: "playing", // Set the game status to playing
       });
     },
   });
@@ -120,7 +122,7 @@ export function useGameState(categoryId: number | null) {
     const currentWord = getCurrentWord();
     if (!currentWord) return false;
     
-    const uniqueLetters = [...new Set(currentWord.split(''))];
+    const uniqueLetters = Array.from(new Set(currentWord.split('')));
     return uniqueLetters.every(letter => gameState.guessedLetters.includes(letter));
   }, [getCurrentWord, gameState.guessedLetters]);
 
@@ -163,7 +165,7 @@ export function useGameState(categoryId: number | null) {
     setGameState(newState);
     
     // Check if word is complete after this guess
-    const uniqueLetters = [...new Set(currentWord.split(''))];
+    const uniqueLetters = Array.from(new Set(currentWord.split('')));
     if (uniqueLetters.every(l => newGuessedLetters.includes(l))) {
       // Word completed
       handleWordComplete();
@@ -206,7 +208,7 @@ export function useGameState(categoryId: number | null) {
     setGameState(newState);
     
     // Check if word is complete after hint
-    const uniqueLetters = [...new Set(currentWord.split(''))];
+    const uniqueLetters = Array.from(new Set(currentWord.split('')));
     if (uniqueLetters.every(l => newGuessedLetters.includes(l))) {
       // Word completed
       handleWordComplete();
