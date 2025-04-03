@@ -11,8 +11,8 @@ import { playSound } from "@/lib/sound";
 
 export default function Game() {
   const [, navigate] = useLocation();
-  const [match] = useRoute<{ categoryId: string }>('/game/:categoryId');
-  const categoryId = match ? parseInt(match.params.categoryId) : null;
+  const [matched, params] = useRoute<{ categoryId: string }>('/game/:categoryId');
+  const categoryId = matched ? parseInt(params.categoryId) : null;
   
   const [showHintModal, setShowHintModal] = useState(false);
   
