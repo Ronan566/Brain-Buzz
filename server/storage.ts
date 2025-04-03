@@ -55,6 +55,7 @@ export class MemStorage implements IStorage {
       bestScore: 0,
       wordsSolved: 0,
       memorySetsCompleted: 0,
+      numberSequencesSolved: 0,
       categoryProgress: {}
     };
     

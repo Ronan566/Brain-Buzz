@@ -30,6 +30,9 @@ export default function CategorySelection() {
       case "memory":
         setLocation(`/memory/${category.id}`);
         break;
+      case "number":
+        setLocation(`/number/${category.id}`);
+        break;
       case "word":
       default:
         setLocation(`/game/${category.id}`);
@@ -65,7 +68,7 @@ export default function CategorySelection() {
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold mb-2 tracking-wide"
         >
-          Word Master
+          Brain Buzz
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -73,7 +76,7 @@ export default function CategorySelection() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="text-white/90"
         >
-          Challenge your vocabulary and word skills!
+          Challenge your brain and have fun!
         </motion.p>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}

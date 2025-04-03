@@ -26,6 +26,11 @@ const SOUNDS = {
     src: "https://assets.mixkit.co/active_storage/sfx/1114/1114.wav",
     volume: 0.3,
   },
+  // Number sequence specific sounds
+  error: {
+    src: "https://assets.mixkit.co/active_storage/sfx/1112/1112.wav",
+    volume: 0.5,
+  },
   // Memory game specific sounds
   flip: {
     src: "https://assets.mixkit.co/active_storage/sfx/2073/2073.wav",

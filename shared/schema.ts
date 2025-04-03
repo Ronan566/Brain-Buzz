@@ -56,6 +56,7 @@ export const userScores = pgTable("user_scores", {
   bestScore: integer("best_score").notNull().default(0),
   wordsSolved: integer("words_solved").notNull().default(0),
   memorySetsCompleted: integer("memory_sets_completed").default(0),
+  numberSequencesSolved: integer("number_sequences_solved").default(0),
   categoryProgress: json("category_progress").notNull().default({}),
 });
 
@@ -63,6 +64,7 @@ export const insertUserScoreSchema = createInsertSchema(userScores).pick({
   bestScore: true,
   wordsSolved: true,
   memorySetsCompleted: true,
+  numberSequencesSolved: true,
   categoryProgress: true
 });
 
