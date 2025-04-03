@@ -6,7 +6,8 @@ interface ThemeInfoProps {
 }
 
 // Function to determine the likely theme of a word
-function determineTheme(word: string): string {
+function determineTheme(word: string | null): string {
+  if (!word) return 'Word';
   // List of theme words for each category
   const themes = {
     animals: ['DOLPHIN', 'ELEPHANT', 'GIRAFFE', 'PENGUIN'],

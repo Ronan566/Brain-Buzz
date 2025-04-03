@@ -107,7 +107,7 @@ export default function Game() {
         {/* Word Display Area */}
         <div className="mb-10 relative">
           <div className="flex gap-2 justify-center mb-6">
-            {currentWord.split('').map((letter, index) => (
+            {currentWord && currentWord.split('').map((letter, index) => (
               <LetterTile
                 key={`${gameState.currentWordIndex}-${index}`}
                 letter={letter}
@@ -129,7 +129,7 @@ export default function Game() {
               <div className="flex items-center justify-between mb-1">
                 <ThemeInfo word={currentWord} />
                 <div className="text-xs text-white/50">
-                  {currentWord.length} letters
+                  {currentWord ? `${currentWord.length} letters` : ''}
                 </div>
               </div>
               <p className="text-sm text-white/90">
@@ -168,12 +168,14 @@ export default function Game() {
       </div>
       
       {/* Keyboard Section */}
-      <Keyboard
-        layout={keyboardLayout}
-        guessedLetters={gameState.guessedLetters}
-        currentWord={currentWord}
-        onKeyPress={guessLetter}
-      />
+      {currentWord && (
+        <Keyboard
+          layout={keyboardLayout}
+          guessedLetters={gameState.guessedLetters}
+          currentWord={currentWord}
+          onKeyPress={guessLetter}
+        />
+      )}
       
       {/* Modals */}
       <AnimatePresence>

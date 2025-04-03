@@ -91,9 +91,27 @@ export function useGameState(categoryId: number | null) {
   // Init game
   useEffect(() => {
     if (categoryId) {
-      startGameMutation.mutate(categoryId);
+      // Reset game state first
+      setGameState(prev => ({
+        ...prev,
+        currentCategory: "",
+        categoryId: 0,
+        words: [],
+        currentWordIndex: 0,
+        guessedLetters: [],
+        incorrectGuesses: 0,
+        remainingHints: 3,
+        revealedHints: 0,
+        score: 0,
+        gameStatus: "idle",
+      }));
+      
+      // Short timeout to allow state reset before starting
+      setTimeout(() => {
+        startGameMutation.mutate(categoryId);
+      }, 100);
     }
-  }, [categoryId, startGameMutation]);
+  }, [categoryId]);
 
   // Get current word
   const getCurrentWord = useCallback(() => {
@@ -278,9 +296,29 @@ export function useGameState(categoryId: number | null) {
   // Restart the game with same category
   const restartGame = useCallback(() => {
     if (categoryId) {
-      startGameMutation.mutate(categoryId);
+      // Reset game state first
+      setGameState(prev => ({
+        ...prev,
+        currentCategory: "",
+        categoryId: 0,
+        words: [],
+        currentWordIndex: 0,
+        guessedLetters: [],
+        incorrectGuesses: 0,
+        remainingHints: 3,
+        revealedHints: 0,
+        score: 0,
+        totalScore: 0,
+        wordsSolved: 0,
+        gameStatus: "idle",
+      }));
+      
+      // Short timeout to allow state reset before starting
+      setTimeout(() => {
+        startGameMutation.mutate(categoryId);
+      }, 100);
     }
-  }, [categoryId, startGameMutation]);
+  }, [categoryId]);
 
   return {
     gameState,
