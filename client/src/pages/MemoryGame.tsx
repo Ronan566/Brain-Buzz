@@ -63,7 +63,7 @@ export default function MemoryGame() {
       setGameState(data);
       setTimeLeft(data.timeLimit);
       startTimer(data.timeLimit);
-      playSound('start');
+      // Removed start sound
     },
     onError: (error) => {
       console.error('Failed to start memory game:', error);
@@ -151,14 +151,14 @@ export default function MemoryGame() {
   const handleTimeUp = () => {
     stopTimer();
     setGameState(prev => ({ ...prev, gameStatus: "timeup" }));
-    playSound('gameover');
+    // Removed gameover sound
   };
   
   // Handle game completion
   const handleGameComplete = () => {
     stopTimer();
     setGameState(prev => ({ ...prev, gameStatus: "won" }));
-    playSound('success');
+    // Removed success sound
     generateConfetti(50);
     
     // Update best score if needed
@@ -182,7 +182,7 @@ export default function MemoryGame() {
       return;
     }
     
-    playSound('flip');
+    // Removed flip sound
     
     // Update flipped cards
     const newFlippedCards = [...flippedCards, cardId];
@@ -209,7 +209,7 @@ export default function MemoryGame() {
         // Check if values match
         if (firstCard && secondCard && firstCard.value === secondCard.value) {
           // Match found
-          playSound('match');
+          // Removed match sound
           setMatchedCards(prev => [...prev, firstCardId, secondCardId]);
           
           // Show fireworks animation for correct match
@@ -238,7 +238,7 @@ export default function MemoryGame() {
           }
         } else {
           // No match
-          playSound('incorrect');
+          // Removed incorrect sound
         }
         
         setFlippedCards([]);

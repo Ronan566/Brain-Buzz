@@ -23,7 +23,7 @@ export default function LetterTile({ letter, revealed, index, difficultyClass = 
       initial="initial"
       animate={revealed ? "correct" : "animate"}
       custom={index}
-      className={`letter-tile ${sizeClass} rounded-lg flex items-center justify-center bg-white/10 font-bold uppercase`}
+      className={`letter-tile ${sizeClass} rounded-lg flex items-center justify-center ${revealed ? 'bg-emerald-500/80' : 'bg-white/10'} font-bold uppercase`}
     >
       {revealed ? (
         <motion.span

@@ -147,7 +147,7 @@ export function useGameState(categoryId: number | null) {
   // Functions that we need to define early to avoid circular dependencies
   const handleGameComplete = useCallback((status: "won" | "lost") => {
     if (status === "won") {
-      playSound('success');
+      // Removed success sound
       
       const newWordsSolved = gameState.wordsSolved + 1;
       const newTotalScore = gameState.totalScore + gameState.score;
@@ -171,7 +171,7 @@ export function useGameState(categoryId: number | null) {
         });
       }
     } else {
-      playSound('gameover');
+      // Removed gameover sound
       
       setGameState(prev => ({
         ...prev,
@@ -187,23 +187,13 @@ export function useGameState(categoryId: number | null) {
     const currentWord = getCurrentWord();
     if (!currentWord) return;
     
-    // Allow letters to be chosen multiple times
-    // Always add letter to guessedLetters to ensure it's marked as guessed
-    // even if it's already there - this ensures correct display in keyboard
-    const newGuessedLetters = [...gameState.guessedLetters];
-    
-    // Only add it if not already there to avoid duplicates
-    if (!newGuessedLetters.includes(letter)) {
-      newGuessedLetters.push(letter);
-    }
+    // Always add letter to guessedLetters even if it's already there
+    // This ensures letters can be reused/selected multiple times
+    const newGuessedLetters = [...gameState.guessedLetters, letter];
     
     const isCorrect = currentWord.includes(letter);
     
-    if (isCorrect) {
-      playSound('correct');
-    } else {
-      playSound('incorrect');
-    }
+    // Removed sound effects for correct/incorrect guesses
     
     const newIncorrectGuesses = isCorrect 
       ? gameState.incorrectGuesses 
@@ -255,7 +245,7 @@ export function useGameState(categoryId: number | null) {
     // Select a random unguessed letter
     const randomLetter = unguessedLetters[Math.floor(Math.random() * unguessedLetters.length)];
     
-    playSound('hint');
+    // Removed hint sound
     
     const newGuessedLetters = [...gameState.guessedLetters, randomLetter];
     

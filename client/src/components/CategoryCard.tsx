@@ -79,8 +79,7 @@ export default function CategoryCard({ category, index, onSelect }: CategoryCard
           <i className={`fas ${category.icon} text-2xl`}></i>
         </div>
         <h3 className="font-semibold text-lg">{category.name}</h3>
-        <div className="flex items-center gap-2 mt-1">
-          <p className="text-xs text-white/70">{category.wordCount} words</p>
+        <div className="flex items-center justify-center mt-1">
           {category.gameType && (
             <span 
               className="text-xs px-2 py-0.5 rounded-full" 

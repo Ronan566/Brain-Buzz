@@ -338,7 +338,7 @@ export default function Crossword() {
         
         setTimeout(() => {
           setVictory(true);
-          playSound('success');
+          // Removed success sound
           updateScoreMutation.mutate(finalScore);
         }, 300);
         
@@ -478,7 +478,7 @@ export default function Crossword() {
     }
     
     if (correctLetter) {
-      playSound('hint');
+      // Removed hint sound
       
       setGameState(prev => {
         const newGrid = [...prev.grid];

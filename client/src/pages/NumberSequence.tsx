@@ -156,7 +156,7 @@ export default function NumberSequence() {
     
     if (userGuess === currentSequence.answer) {
       // Correct answer
-      playSound('success');
+      // Removed success sound
       const pointsEarned = calculatePoints();
       
       // Show fireworks animation for correct answer
@@ -181,7 +181,7 @@ export default function NumberSequence() {
       }
     } else {
       // Wrong answer
-      playSound('incorrect');
+      // Removed incorrect sound
       
       setGameState(prev => {
         const newLives = prev.lives - 1;
@@ -212,8 +212,9 @@ export default function NumberSequence() {
       showHint: !prev.showHint
     }));
     
+    // Removed hint sound
     if (!gameState.showHint) {
-      playSound('hint');
+      // Previously played sound has been removed
     }
   };
 

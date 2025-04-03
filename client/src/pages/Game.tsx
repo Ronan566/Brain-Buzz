@@ -53,13 +53,13 @@ export default function Game() {
   
   // Handle back button
   const handleBack = () => {
-    playSound('click');
+    // Removed click sound
     navigate('/');
   };
   
   // Handle hint button click
   const handleHintClick = () => {
-    playSound('click');
+    // Removed click sound
     setShowHintModal(true);
   };
   
@@ -145,11 +145,8 @@ export default function Game() {
               transition={{ delay: 0.3, duration: 0.5 }}
               className="inline-block bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 max-w-[80%]"
             >
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-center mb-1">
                 <ThemeInfo word={currentWord} />
-                <div className="text-xs text-white/50">
-                  {currentWord ? `${currentWord.length} letters` : ''}
-                </div>
               </div>
               <p className="text-sm text-white/90">
                 <span className="font-semibold">Hint:</span> 
