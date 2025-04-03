@@ -93,7 +93,7 @@ export function useGameState(categoryId: number | null) {
     if (categoryId) {
       startGameMutation.mutate(categoryId);
     }
-  }, [categoryId]);
+  }, [categoryId, startGameMutation]);
 
   // Get current word
   const getCurrentWord = useCallback(() => {
@@ -126,6 +126,42 @@ export function useGameState(categoryId: number | null) {
     return uniqueLetters.every(letter => gameState.guessedLetters.includes(letter));
   }, [getCurrentWord, gameState.guessedLetters]);
 
+  // Functions that we need to define early to avoid circular dependencies
+  const handleGameComplete = useCallback((status: "won" | "lost") => {
+    if (status === "won") {
+      playSound('success');
+      
+      const newWordsSolved = gameState.wordsSolved + 1;
+      const newTotalScore = gameState.totalScore + gameState.score;
+      
+      setGameState(prev => ({
+        ...prev,
+        wordsSolved: newWordsSolved,
+        totalScore: newTotalScore,
+        gameStatus: "won",
+      }));
+      
+      // Update best score if needed
+      if (userScore && newTotalScore > userScore.bestScore) {
+        updateScoreMutation.mutate({ 
+          bestScore: newTotalScore,
+          wordsSolved: userScore.wordsSolved + 1
+        });
+      } else if (userScore) {
+        updateScoreMutation.mutate({ 
+          wordsSolved: userScore.wordsSolved + 1
+        });
+      }
+    } else {
+      playSound('gameover');
+      
+      setGameState(prev => ({
+        ...prev,
+        gameStatus: "lost",
+      }));
+    }
+  }, [gameState.wordsSolved, gameState.totalScore, gameState.score, userScore, updateScoreMutation]);
+  
   // Make a guess
   const guessLetter = useCallback((letter: string) => {
     if (gameState.gameStatus !== "playing") return;
@@ -155,27 +191,28 @@ export function useGameState(categoryId: number | null) {
     const timePenalty = 0; // Could add time-based scoring later
     const guessScore = isCorrect ? basePoints - hintPenalty - timePenalty : 0;
     
-    const newState = {
-      ...gameState,
-      guessedLetters: newGuessedLetters,
-      incorrectGuesses: newIncorrectGuesses,
-      score: gameState.score + guessScore,
-    };
+    // Update game state first
+    setGameState(prevState => {
+      const updatedState = {
+        ...prevState,
+        guessedLetters: newGuessedLetters,
+        incorrectGuesses: newIncorrectGuesses,
+        score: prevState.score + guessScore,
+      };
+      return updatedState;
+    });
     
-    setGameState(newState);
-    
-    // Check if word is complete after this guess
+    // Check for word complete and game over separately, after state update
     const uniqueLetters = Array.from(new Set(currentWord.split('')));
-    if (uniqueLetters.every(l => newGuessedLetters.includes(l))) {
-      // Word completed
-      handleWordComplete();
-    }
+    const wordComplete = uniqueLetters.every(l => newGuessedLetters.includes(l));
     
-    // Check if too many incorrect guesses
-    if (newIncorrectGuesses >= 6) {
-      handleGameOver();
+    if (wordComplete) {
+      // Small delay to ensure state update completes
+      setTimeout(() => handleGameComplete("won"), 100);
+    } else if (newIncorrectGuesses >= 6) {
+      setTimeout(() => handleGameComplete("lost"), 100);
     }
-  }, [gameState, getCurrentWord]);
+  }, [gameState, getCurrentWord, handleGameComplete]);
 
   // Use a hint
   const useHint = useCallback(() => {
@@ -197,60 +234,25 @@ export function useGameState(categoryId: number | null) {
     playSound('hint');
     
     const newGuessedLetters = [...gameState.guessedLetters, randomLetter];
-    const newState = {
-      ...gameState,
-      guessedLetters: newGuessedLetters,
-      remainingHints: gameState.remainingHints - 1,
-      revealedHints: Math.min(gameState.revealedHints + 1, getCurrentHints().length - 1),
-      score: Math.max(0, gameState.score - 5), // Penalty for using hint
-    };
     
-    setGameState(newState);
+    setGameState(prevState => {
+      const newState = {
+        ...prevState,
+        guessedLetters: newGuessedLetters,
+        remainingHints: prevState.remainingHints - 1,
+        revealedHints: Math.min(prevState.revealedHints + 1, getCurrentHints().length - 1),
+        score: Math.max(0, prevState.score - 5), // Penalty for using hint
+      };
+      return newState;
+    });
     
     // Check if word is complete after hint
     const uniqueLetters = Array.from(new Set(currentWord.split('')));
     if (uniqueLetters.every(l => newGuessedLetters.includes(l))) {
-      // Word completed
-      handleWordComplete();
+      // Small delay to ensure state update completes
+      setTimeout(() => handleGameComplete("won"), 100);
     }
-  }, [gameState, getCurrentWord, getCurrentHints]);
-
-  // Handle word completion
-  const handleWordComplete = useCallback(() => {
-    playSound('success');
-    
-    const newWordsSolved = gameState.wordsSolved + 1;
-    const newTotalScore = gameState.totalScore + gameState.score;
-    
-    setGameState(prev => ({
-      ...prev,
-      wordsSolved: newWordsSolved,
-      totalScore: newTotalScore,
-      gameStatus: "won",
-    }));
-    
-    // Update best score if needed
-    if (userScore && newTotalScore > userScore.bestScore) {
-      updateScoreMutation.mutate({ 
-        bestScore: newTotalScore,
-        wordsSolved: userScore.wordsSolved + 1
-      });
-    } else if (userScore) {
-      updateScoreMutation.mutate({ 
-        wordsSolved: userScore.wordsSolved + 1
-      });
-    }
-  }, [gameState, userScore, updateScoreMutation]);
-
-  // Handle game over
-  const handleGameOver = useCallback(() => {
-    playSound('gameover');
-    
-    setGameState(prev => ({
-      ...prev,
-      gameStatus: "lost",
-    }));
-  }, []);
+  }, [gameState, getCurrentWord, getCurrentHints, handleGameComplete]);
 
   // Move to the next word
   const nextWord = useCallback(() => {
@@ -261,8 +263,8 @@ export function useGameState(categoryId: number | null) {
       return;
     }
     
-    setGameState({
-      ...gameState,
+    setGameState(prevState => ({
+      ...prevState,
       currentWordIndex: nextIndex,
       guessedLetters: [],
       incorrectGuesses: 0,
@@ -270,8 +272,8 @@ export function useGameState(categoryId: number | null) {
       revealedHints: 0,
       score: 0,
       gameStatus: "playing",
-    });
-  }, [gameState]);
+    }));
+  }, [gameState.currentWordIndex, gameState.maxWords]);
 
   // Restart the game with same category
   const restartGame = useCallback(() => {
