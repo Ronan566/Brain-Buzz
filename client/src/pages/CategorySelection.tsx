@@ -33,6 +33,9 @@ export default function CategorySelection() {
       case "number":
         setLocation(`/number/${category.id}`);
         break;
+      case "crossword":
+        setLocation(`/crossword/${category.id}`);
+        break;
       case "word":
       default:
         setLocation(`/game/${category.id}`);
@@ -78,14 +81,7 @@ export default function CategorySelection() {
         >
           Challenge your brain and have fun!
         </motion.p>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="mt-3 mb-1 px-4 py-1 bg-indigo-600 rounded-full inline-block"
-        >
-          <span className="text-sm font-medium">Featured: Word Guessing Challenge</span>
-        </motion.div>
+
       </header>
       
       <div className="grid grid-cols-2 gap-4 flex-grow overflow-y-auto pb-20">
@@ -99,26 +95,7 @@ export default function CategorySelection() {
         ))}
       </div>
       
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-primary to-transparent h-32 pointer-events-none"></div>
-      
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="fixed bottom-6 left-0 right-0 flex justify-center"
-      >
-        <div className="bg-white/20 backdrop-blur-xl rounded-full px-8 py-3 flex items-center gap-4">
-          <div className="flex flex-col items-center">
-            <span className="text-sm opacity-70">Total Score</span>
-            <span className="font-bold">{userScore?.bestScore || 0}</span>
-          </div>
-          <div className="w-px h-10 bg-white/20"></div>
-          <div className="flex flex-col items-center">
-            <span className="text-sm opacity-70">Words Mastered</span>
-            <span className="font-bold">{userScore?.wordsSolved || 0}</span>
-          </div>
-        </div>
-      </motion.div>
+
     </div>
   );
 }

@@ -57,6 +57,7 @@ export const userScores = pgTable("user_scores", {
   wordsSolved: integer("words_solved").notNull().default(0),
   memorySetsCompleted: integer("memory_sets_completed").default(0),
   numberSequencesSolved: integer("number_sequences_solved").default(0),
+  crosswordsCompleted: integer("crosswords_completed").default(0),
   categoryProgress: json("category_progress").notNull().default({}),
 });
 
@@ -65,6 +66,7 @@ export const insertUserScoreSchema = createInsertSchema(userScores).pick({
   wordsSolved: true,
   memorySetsCompleted: true,
   numberSequencesSolved: true,
+  crosswordsCompleted: true,
   categoryProgress: true
 });
 
@@ -109,6 +111,52 @@ export const memoryGameStateSchema = z.object({
   gameStatus: z.enum(["idle", "playing", "won", "timeup"]).default("idle"),
 });
 
+// Define the CrosswordGameState schema for the crossword game
+export const crosswordGameStateSchema = z.object({
+  currentCategory: z.string().optional(),
+  categoryId: z.number().optional(),
+  grid: z.array(z.array(z.object({
+    letter: z.string().default(''),
+    isBlack: z.boolean().default(false),
+    number: z.number().optional(),
+    filled: z.boolean().default(false),
+    isRevealed: z.boolean().default(false),
+    isCorrect: z.boolean().optional(),
+    row: z.number(),
+    col: z.number(),
+  }))),
+  clues: z.object({
+    across: z.array(z.object({
+      number: z.number(),
+      clue: z.string(),
+      answer: z.string(),
+      row: z.number(),
+      col: z.number(),
+      length: z.number(),
+      solved: z.boolean().default(false),
+    })),
+    down: z.array(z.object({
+      number: z.number(),
+      clue: z.string(),
+      answer: z.string(),
+      row: z.number(),
+      col: z.number(),
+      length: z.number(),
+      solved: z.boolean().default(false),
+    })),
+  }),
+  currentClue: z.object({
+    direction: z.enum(['across', 'down']).default('across'),
+    number: z.number().default(0),
+  }),
+  score: z.number().default(0),
+  hints: z.number().default(3),
+  gameStatus: z.enum(["idle", "playing", "won", "timeup"]).default("idle"),
+  timeElapsed: z.number().default(0),
+  timeLimit: z.number().default(600),
+  difficulty: z.number().default(1),
+});
+
 // Type definitions
 export type Category = typeof categories.$inferSelect;
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
@@ -120,3 +168,4 @@ export type UserScore = typeof userScores.$inferSelect;
 export type InsertUserScore = z.infer<typeof insertUserScoreSchema>;
 export type GameState = z.infer<typeof gameStateSchema>;
 export type MemoryGameState = z.infer<typeof memoryGameStateSchema>;
+export type CrosswordGameState = z.infer<typeof crosswordGameStateSchema>;
