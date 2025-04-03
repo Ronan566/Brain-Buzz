@@ -18,6 +18,10 @@ const SOUNDS = {
     src: "https://assets.mixkit.co/active_storage/sfx/1192/1192.wav",
     volume: 0.6,
   },
+  splash: {
+    src: "https://assets.mixkit.co/active_storage/sfx/232/232.wav",
+    volume: 0.7,
+  },
   gameover: {
     src: "https://assets.mixkit.co/active_storage/sfx/1142/1142.wav",
     volume: 0.5,

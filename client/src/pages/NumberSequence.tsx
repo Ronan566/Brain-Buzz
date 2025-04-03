@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiRequest, queryClient } from '@/lib/queryClient';
-import { modalVariants, backdropVariants } from '@/lib/animations';
+import { modalVariants, backdropVariants, createJumpingFish } from '@/lib/animations';
 import { playSound } from '@/lib/sound';
 import { useToast } from '@/hooks/use-toast';
+import JumpingFish from '@/components/JumpingFish';
 
 // Define levels for number sequences
 const sequenceLevels = [
@@ -86,6 +87,7 @@ interface GameState {
 export default function NumberSequence() {
   const [, setLocation] = useLocation();
   const [match, params] = useRoute<{ id: string }>('/number/:id');
+  const [showFish, setShowFish] = useState(false);
   
   const [gameState, setGameState] = useState<GameState>({
     currentLevel: 0,
@@ -156,6 +158,12 @@ export default function NumberSequence() {
       // Correct answer
       playSound('success');
       const pointsEarned = calculatePoints();
+      
+      // Show jumping fish animation for correct answer
+      setShowFish(true);
+      setTimeout(() => {
+        setShowFish(false);
+      }, 3000);
       
       setGameState(prev => ({
         ...prev,
@@ -384,6 +392,9 @@ export default function NumberSequence() {
           </motion.div>
         </>
       )}
+      
+      {/* Jumping Fish Animation */}
+      <JumpingFish isVisible={showFish} count={6} />
     </div>
   );
 }

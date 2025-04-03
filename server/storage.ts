@@ -116,18 +116,24 @@ export class MemStorage implements IStorage {
   // Helper methods for seeding initial data
   private addCategory(category: InsertCategory): Category {
     const id = this.categoryCurrentId++;
-    const newCategory = { ...category, id };
+    const newCategory = { 
+      ...category, 
+      id,
+      gameType: category.gameType ?? 'word' // Ensure gameType is never undefined
+    };
     this.categories.set(id, newCategory);
     return newCategory;
   }
 
   private addWord(word: InsertWord): Word {
     const id = this.wordCurrentId++;
+    // Ensure hints is always a proper string array
+    const hints = Array.isArray(word.hints) ? word.hints : [];
     const newWord = { 
       id,
       word: word.word,
       categoryId: word.categoryId,
-      hints: word.hints || []
+      hints: hints
     };
     this.words.set(id, newWord);
     return newWord;

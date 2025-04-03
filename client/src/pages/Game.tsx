@@ -8,6 +8,7 @@ import SuccessModal from "@/components/SuccessModal";
 import GameOverModal from "@/components/GameOverModal";
 import HintModal from "@/components/HintModal";
 import ThemeInfo from "@/components/ThemeInfo";
+import JumpingFish from "@/components/JumpingFish";
 import { playSound } from "@/lib/sound";
 
 export default function Game() {
@@ -16,6 +17,7 @@ export default function Game() {
   const categoryId = matched ? parseInt(params.categoryId) : null;
   
   const [showHintModal, setShowHintModal] = useState(false);
+  const [showFish, setShowFish] = useState(false);
   
   // Initialize game state
   const {
@@ -31,6 +33,25 @@ export default function Game() {
   
   // Get the current word
   const currentWord = getCurrentWord();
+  
+  // Custom wrapper for guessLetter to show fish animation on correct guesses
+  const handleGuessLetter = (letter: string) => {
+    // Check if this letter is in the word and not already guessed
+    if (currentWord && 
+        currentWord.includes(letter) && 
+        !gameState.guessedLetters.includes(letter)) {
+      // Trigger fish animation
+      setShowFish(true);
+      
+      // Reset fish animation after a delay
+      setTimeout(() => {
+        setShowFish(false);
+      }, 3000);
+    }
+    
+    // Call the original guessLetter function
+    guessLetter(letter);
+  };
   
   // Handle back button
   const handleBack = () => {
@@ -173,9 +194,12 @@ export default function Game() {
           layout={keyboardLayout}
           guessedLetters={gameState.guessedLetters}
           currentWord={currentWord}
-          onKeyPress={guessLetter}
+          onKeyPress={handleGuessLetter}
         />
       )}
+      
+      {/* Jumping Fish Animation */}
+      <JumpingFish isVisible={showFish} count={7} />
       
       {/* Modals */}
       <AnimatePresence>

@@ -156,3 +156,33 @@ export function generateConfetti(count: number) {
   
   return particles;
 }
+
+// Fish emoji options
+const fishEmojis = ["🐟", "🐠", "🐡", "🦈", "🐬", "🐋", "🦭"];
+
+// Generate jumping fish animation
+export interface JumpingFish {
+  id: number;
+  emoji: string;
+  x: number;
+  scale: number;
+  duration: number;
+  delay: number;
+}
+
+export function createJumpingFish(count: number): JumpingFish[] {
+  const fish = [];
+  
+  for (let i = 0; i < count; i++) {
+    fish.push({
+      id: Date.now() + i,
+      emoji: fishEmojis[Math.floor(Math.random() * fishEmojis.length)],
+      x: Math.random() * 100, // Random horizontal position (0-100%)
+      scale: 0.5 + Math.random() * 1.5, // Random size between 0.5 and 2
+      duration: 1.2 + Math.random() * 1.8, // Random animation duration
+      delay: Math.random() * 0.5, // Random delay before animation starts
+    });
+  }
+  
+  return fish;
+}
