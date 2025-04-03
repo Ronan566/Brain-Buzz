@@ -88,7 +88,7 @@ export default function Game() {
         <div className="flex flex-col items-center">
           <h2 className="font-semibold text-lg">{gameState.currentCategory}</h2>
           <div className="flex items-center gap-1 text-sm text-white/70">
-            <span>Word</span>
+            <span>Puzzle</span>
             <span className="font-bold text-white">{gameState.currentWordIndex + 1}</span>
             <span>/{gameState.maxWords}</span>
           </div>

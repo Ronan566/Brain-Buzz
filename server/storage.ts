@@ -94,167 +94,214 @@ export class MemStorage implements IStorage {
 
   private addWord(word: InsertWord): Word {
     const id = this.wordCurrentId++;
-    const newWord = { ...word, id };
+    const newWord = { 
+      id,
+      word: word.word,
+      categoryId: word.categoryId,
+      hints: word.hints
+    };
     this.words.set(id, newWord);
     return newWord;
   }
 
   private seedData() {
-    // Add categories
-    const moviesCategory = this.addCategory({
-      name: "Movies",
-      icon: "fa-film",
+    // Add categories for different brain teaser games
+    const wordPuzzleCategory = this.addCategory({
+      name: "Word Guessing",
+      icon: "fa-font",
       color: "#6366F1",
       wordCount: 25
     });
 
-    const foodCategory = this.addCategory({
-      name: "Food",
-      icon: "fa-utensils",
+    const memoryMatchCategory = this.addCategory({
+      name: "Memory Matching",
+      icon: "fa-clone",
       color: "#F59E0B",
       wordCount: 30
     });
 
-    const countriesCategory = this.addCategory({
-      name: "Countries",
-      icon: "fa-globe-americas",
+    const puzzleGamesCategory = this.addCategory({
+      name: "Puzzle Games",
+      icon: "fa-puzzle-piece",
       color: "#10B981",
       wordCount: 20
     });
 
-    const gamesCategory = this.addCategory({
-      name: "Video Games",
-      icon: "fa-gamepad",
+    const wordSearchCategory = this.addCategory({
+      name: "Word Search",
+      icon: "fa-search",
       color: "#EF4444",
       wordCount: 27
     });
 
-    const animalsCategory = this.addCategory({
-      name: "Animals",
-      icon: "fa-paw",
+    const numberSequenceCategory = this.addCategory({
+      name: "Number Sequences",
+      icon: "fa-sort-numeric-up",
       color: "#6366F1",
       wordCount: 32
     });
 
-    const vehiclesCategory = this.addCategory({
-      name: "Vehicles",
-      icon: "fa-car",
+    const crosswordsCategory = this.addCategory({
+      name: "Crosswords",
+      icon: "fa-table",
       color: "#F59E0B",
       wordCount: 18
     });
 
-    // Add words for Movies category
+    // Add words for Word Guessing category
     this.addWord({
-      word: "TITANIC",
-      categoryId: moviesCategory.id,
-      hints: ["A famous ship disaster from 1912", "Leonardo DiCaprio starred in it", "Directed by James Cameron"]
+      word: "PUZZLE",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["A game or problem that tests ingenuity", "Often involves fitting pieces together", "Can be a mental challenge"]
     });
 
     this.addWord({
-      word: "AVATAR",
-      categoryId: moviesCategory.id,
-      hints: ["Blue aliens", "Pandora is the setting", "Highest grossing movie"]
+      word: "RIDDLE",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["A mystifying question to be solved", "Often uses wordplay", "Requires thinking outside the box"]
     });
 
     this.addWord({
-      word: "MATRIX",
-      categoryId: moviesCategory.id,
-      hints: ["Red pill or blue pill", "Neo is the main character", "Reality is a simulation"]
+      word: "CRYPTIC",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["Having a hidden meaning", "Mysterious or obscure", "Requires decoding"]
     });
 
-    // Add words for Food category
+    // Add more words for Word Guessing category
     this.addWord({
-      word: "PIZZA",
-      categoryId: foodCategory.id,
-      hints: ["Italian dish", "Round with toppings", "Often delivered to homes"]
+      word: "ENIGMA",
+      categoryId: wordPuzzleCategory.id,
+      hints: ["A puzzling mystery", "Hard to understand or explain", "Requires careful thought"]
     });
 
+    // Add words for Memory Matching category
     this.addWord({
-      word: "SUSHI",
-      categoryId: foodCategory.id,
-      hints: ["Japanese cuisine", "Often contains raw fish", "Served with wasabi"]
-    });
-
-    this.addWord({
-      word: "BURGER",
-      categoryId: foodCategory.id,
-      hints: ["American classic", "Patty between buns", "Fast food staple"]
-    });
-
-    // Add words for Countries category
-    this.addWord({
-      word: "FRANCE",
-      categoryId: countriesCategory.id,
-      hints: ["Known for the Eiffel Tower", "Located in Europe", "Famous for wine and cheese"]
+      word: "PAIRS",
+      categoryId: memoryMatchCategory.id,
+      hints: ["Finding matching items", "Tests short-term recall", "Often played with cards"]
     });
 
     this.addWord({
-      word: "BRAZIL",
-      categoryId: countriesCategory.id,
-      hints: ["Largest country in South America", "Famous for carnival", "Home of the Amazon rainforest"]
+      word: "MEMORY",
+      categoryId: memoryMatchCategory.id,
+      hints: ["Ability to recall information", "Storage of knowledge", "Can be improved with practice"]
     });
 
     this.addWord({
-      word: "JAPAN",
-      categoryId: countriesCategory.id,
-      hints: ["Island nation in Asia", "Land of the rising sun", "Known for sushi and anime"]
+      word: "RECALL",
+      categoryId: memoryMatchCategory.id,
+      hints: ["Bringing back to mind", "Remembering previous patterns", "Quick mental access"]
     });
 
-    // Add words for Video Games category
+    // Add more words for Memory Matching category
     this.addWord({
-      word: "MINECRAFT",
-      categoryId: gamesCategory.id,
-      hints: ["Block-building game", "Created by Notch", "Involves mining and crafting"]
+      word: "MATCH",
+      categoryId: memoryMatchCategory.id,
+      hints: ["Finding identical items", "Looking for similarities", "Pairing like with like"]
     });
 
+    // Add words for Puzzle Games category
     this.addWord({
-      word: "FORTNITE",
-      categoryId: gamesCategory.id,
-      hints: ["Battle royale game", "Building structures is key", "Features a shrinking storm"]
-    });
-
-    this.addWord({
-      word: "TETRIS",
-      categoryId: gamesCategory.id,
-      hints: ["Falling block puzzle", "Created in Russia", "Line clearing game"]
-    });
-
-    // Add words for Animals category
-    this.addWord({
-      word: "ELEPHANT",
-      categoryId: animalsCategory.id,
-      hints: ["Largest land mammal", "Has a trunk", "Big ears and tusks"]
+      word: "JIGSAW",
+      categoryId: puzzleGamesCategory.id,
+      hints: ["Pieces that interlock", "Creates a complete picture", "Often has 500-1000 pieces"]
     });
 
     this.addWord({
-      word: "GIRAFFE",
-      categoryId: animalsCategory.id,
-      hints: ["Tallest animal", "Long neck", "Spotted pattern"]
+      word: "SLIDING",
+      categoryId: puzzleGamesCategory.id,
+      hints: ["Moving tiles in a frame", "Rearranging into correct order", "Classic 15-puzzle game"]
     });
 
     this.addWord({
-      word: "PENGUIN",
-      categoryId: animalsCategory.id,
-      hints: ["Flightless bird", "Lives in Antarctica", "Black and white coloring"]
+      word: "TANGRAM",
+      categoryId: puzzleGamesCategory.id,
+      hints: ["Chinese geometric puzzle", "Seven pieces to form shapes", "Tests spatial reasoning"]
     });
 
-    // Add words for Vehicles category
+    // Add more words for Puzzle Games category
     this.addWord({
-      word: "HELICOPTER",
-      categoryId: vehiclesCategory.id,
-      hints: ["Flying vehicle with rotors", "Vertical takeoff", "No fixed wings"]
+      word: "SUDOKU",
+      categoryId: puzzleGamesCategory.id,
+      hints: ["Number placement puzzle", "Grid with 9x9 squares", "Each row and column has numbers 1-9"]
+    });
+
+    // Add words for Word Search category
+    this.addWord({
+      word: "HIDDEN",
+      categoryId: wordSearchCategory.id,
+      hints: ["Not easily seen", "Concealed from view", "Requires careful searching"]
     });
 
     this.addWord({
-      word: "SUBMARINE",
-      categoryId: vehiclesCategory.id,
-      hints: ["Underwater vessel", "Used by navies", "Can dive deep below the surface"]
+      word: "LETTERS",
+      categoryId: wordSearchCategory.id,
+      hints: ["Alphabet characters", "Building blocks of words", "Can be arranged in grids"]
     });
 
     this.addWord({
-      word: "MOTORCYCLE",
-      categoryId: vehiclesCategory.id,
-      hints: ["Two-wheeled vehicle", "Requires balance", "Rider straddles the seat"]
+      word: "SEARCH",
+      categoryId: wordSearchCategory.id,
+      hints: ["Looking for something", "Careful examination", "Finding what's concealed"]
+    });
+
+    // Add more words for Word Search category
+    this.addWord({
+      word: "GRID",
+      categoryId: wordSearchCategory.id,
+      hints: ["Network of lines", "Organized arrangement", "Forms boxes or cells"]
+    });
+
+    // Add words for Number Sequences category
+    this.addWord({
+      word: "PATTERN",
+      categoryId: numberSequenceCategory.id,
+      hints: ["Repeating elements", "Discernible regularity", "Requires logical detection"]
+    });
+
+    this.addWord({
+      word: "SEQUENCE",
+      categoryId: numberSequenceCategory.id,
+      hints: ["Series of related elements", "Following a logical order", "Each element builds on previous ones"]
+    });
+
+    this.addWord({
+      word: "FIBONACCI",
+      categoryId: numberSequenceCategory.id,
+      hints: ["Famous number pattern", "Each number is sum of two preceding ones", "Starts with 0, 1, 1, 2, 3, 5..."]
+    });
+
+    // Add more words for Number Sequences category
+    this.addWord({
+      word: "PRIME",
+      categoryId: numberSequenceCategory.id,
+      hints: ["Divisible only by 1 and itself", "2, 3, 5, 7, 11...", "Special category of numbers"]
+    });
+
+    // Add words for Crosswords category
+    this.addWord({
+      word: "CLUES",
+      categoryId: crosswordsCategory.id,
+      hints: ["Hints to find answers", "Can be cryptic or direct", "Guide to solving puzzles"]
+    });
+
+    this.addWord({
+      word: "ACROSS",
+      categoryId: crosswordsCategory.id,
+      hints: ["Horizontal direction", "From left to right", "One dimension in a grid"]
+    });
+
+    this.addWord({
+      word: "DOWN",
+      categoryId: crosswordsCategory.id,
+      hints: ["Vertical direction", "From top to bottom", "Perpendicular to across"]
+    });
+    
+    // Add more words for Crosswords category
+    this.addWord({
+      word: "FILL",
+      categoryId: crosswordsCategory.id,
+      hints: ["Complete the empty spaces", "Enter the correct answers", "Populate the blank squares"]
     });
   }
 }
