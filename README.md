@@ -46,17 +46,16 @@ Clone the Repository:
 git clone https://github.com/Ronan566/Brain-Buzz.git
 Navigate to the Project Directory:
 cd Brain-Buzz
-Install Required Dependencies: If you're using npm:
+Install Required Dependencies:
+If you're using npm:
 npm install
 Or if you're using yarn:
 yarn install
-Run the Game: Run the main file to start the game:
+Run the Game:
 npm start
 Usage
 
-Once the game starts, you will be presented with a menu of puzzle types.
-Choose a puzzle type to begin and follow the on-screen instructions to play.
-Enjoy the challenge and have fun while training your brain!
+Once the game starts, you will be presented with a menu of puzzle types. Choose a puzzle type to begin and follow the on-screen instructions to play. Enjoy the challenge and have fun while training your brain!
 Contributing
 
 Fork the repository and clone your fork to your local machine.
