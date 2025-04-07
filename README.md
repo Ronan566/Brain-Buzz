@@ -6,6 +6,7 @@ Memory Matching Game
 Number Sequences
 Crossword Puzzles
 This app is designed to help improve cognitive abilities while providing an enjoyable experience.
+
 Features
 
 Multiple Puzzle Types: Challenge yourself with different types of puzzles.
@@ -26,16 +27,19 @@ React Hook Form (v7.53.1) - For handling form inputs
 React Icons (v5.4.0) - Library for including icons in your app
 TanStack React Query (v5.60.5) - For data fetching and caching
 Zod (v3.23.8) - For schema validation
+
 Backend Libraries:
 Express (v4.21.2) - Web server framework for backend routes
 Drizzle ORM (v0.39.1) - ORM for database operations
 Drizzle-zod (v0.7.0) - Integrates Drizzle ORM with Zod for validation
 @neondatabase/serverless (v0.10.4) - For database connectivity (using in-memory storage)
+
 Build Tools:
 TypeScript (v5.6.3) - Type-safe JavaScript
 Vite (v5.4.14) - Build tool and development server
 TSX (v4.19.1) - For running TypeScript files
 ESBuild (v0.25.0) - Fast JavaScript/TypeScript bundler
+
 Setup Instructions
 
 For Replit:
@@ -56,6 +60,7 @@ npm start
 Usage
 
 Once the game starts, you will be presented with a menu of puzzle types. Choose a puzzle type to begin and follow the on-screen instructions to play. Enjoy the challenge and have fun while training your brain!
+
 Contributing
 
 Fork the repository and clone your fork to your local machine.
