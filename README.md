@@ -13,6 +13,7 @@ Multiple Puzzle Types: Challenge yourself with different types of puzzles.
 Interactive Gameplay: Each puzzle is designed to be engaging and fun.
 User-Friendly Interface: Easy navigation and clear instructions.
 Improve Cognitive Skills: Train your memory, problem-solving, and pattern recognition abilities.
+
 Technologies Used
 
 Frontend Libraries:
